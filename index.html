@@ -20,6 +20,10 @@
     <!-- Custom styles for this template -->
     <link href="css/business-casual.min.css" rel="stylesheet">
 
+    <!-- dc.js styles -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/dc/3.0.9/dc.css" rel="stylesheet">
+
+
   </head>
 
   <body>
@@ -92,15 +96,108 @@
       </div>
     </section>
 
+    <!-- DC D3 crossfilter graph-->
+    <section class="page-section cta">
+      <div class='container' style='font: 12px sans-serif;'>
+
+        <div class="row">
+            <div class="data-count" style="float: left">
+    
+                <br><br>
+                <span>
+            <span style="color:blue" class="filter-count">a</span>
+                    selected out of
+                    <span style="color:blue" class="total-count">b</span>
+                    records
+            <a href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
+                </span>
+            </div>
+        </div>
+        <br>
+    
+        <div class="row">
+    
+            <div class='span4' id='penguin-chart'>
+    
+                <strong>Penguin type</strong>
+                <a class="reset"
+                   href="javascript:penguinChart.filterAll();dc.redrawAll();"
+                   style="display: none;">
+                    reset
+                </a>
+    
+                <div class="clearfix"></div>
+            </div>
+    
+            <div class='span4' id='year-pie'>
+
+              <strong>Observation year</strong>
+              <a class="reset"
+                 href="javascript:yearPie.filterAll();dc.redrawAll();"
+                 style="display: none;">
+                  reset
+              </a>
+              <div class="clearfix"></div>
+  </div>
+    
+    
+    
+        </div>
+
+        <div class="row">
+          <div class='span12' id="time-bar">
+            <strong>Select time range on this chart</strong>
+
+          </div>
+        </div>
+
+    
+        <div class="row">
+            <div class='span12' id="time-chart-obs">
+                <strong>Observations by month</strong>
+                <a class="reset"
+                   href="javascript:timeChartObs.filterAll();timeBar.filterAll();dc.redrawAll();"
+                   style="display: none;"> reset</a>
+                <span class="reset" style="display: none;">Current filter: <span class="filter"></span></span>
+            </div>
+        </div>
+
+        <div class="row">
+          <div class='span12' id="time-chart-count">
+              <strong>Total penguin count for selected observations</strong>
+              <a class="reset"
+                 href="javascript:timeChartCount.filterAll();timeBar.filterAll();dc.redrawAll();"
+                 style="display: none;"> reset</a>
+              <span class="reset" style="display: none;">Current filter: <span class="filter"></span></span>
+          </div>
+      </div>
+
+    
+        <div class="row">
+            <div class='span12'>
+                <table class='table table-hover' id='data-table'>
+    
+                </table>
+            </div>
+        </div>
+    </div>
+    </section>
+
     <footer class="footer text-faded text-center py-5">
       <div class="container">
-        <p class="m-0 small">Copyright &copy; Your Website 2018</p>
+        <p class="m-0 small">Corentin Barman, Romain Claret, Antoine Friant, Edward Ransome</p>
       </div>
     </footer>
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.js"></script>
+    <!-- dc -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.9/dc.js"></script>
+    <script src="js/charts.js"></script>
+
 
   </body>
 
