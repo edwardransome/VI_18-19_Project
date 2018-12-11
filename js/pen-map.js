@@ -195,10 +195,8 @@ $( document ).ready(function(){
 			// if no site is specified
 			data_penguins.forEach(item => {
 				if (item.year == year){
-					if($.inArray(item.count_type,type) > -1){
-						if($.inArray("empty",type) > -1){add_marker(item)}
-						else{if(item.penguin_count != 0){add_marker(item)}}
-					}
+					if($.inArray("empty",type) > -1 && item.penguin_count == 0){add_marker(item)}
+					if($.inArray(item.count_type,type) > -1 && item.penguin_count > 0){add_marker(item)}
 				}
 			});
 		}
@@ -219,9 +217,11 @@ $( document ).ready(function(){
 	function add_marker(entry) {
 		// build custom pin icon
 		let pen_type = entry.count_type;
-		if (entry.penguin_count == 0){pen_type="empty";}
+		if(entry.penguin_count == 0){pen_type="empty"}
+		let pen_species = entry.common_name.replace(/ /g,'_').replace(/é/g,'e');
+
 		let pinIcon = L.icon({
-			iconUrl : 'icons/' + 'pen_pin_'+ pen_type + '.png',
+			iconUrl : 'icons/pen_pin_'+pen_type+'_'+pen_species+'.png',
 			iconSize: [35, 41],
 			iconAnchor: [17.5, 41],
 			popupAnchor: [0, -5]
@@ -240,16 +240,20 @@ $( document ).ready(function(){
 	}
 
 	function add_marker_details(entry) {
-		let name = "<h2>" + entry.site_name + " (" + entry.site_id + ")" + "</h2>"
+		let year = (entry.year == null) ? "????" : entry.year;
+		let month = (entry.month == null) ? "??" : entry.month;
+		let day = (entry.day == null) ? "??" : entry.day;
+		let name = "<h2>" + entry.site_name + " (" + entry.site_id + ")" + "</h2>";
 		let position = "<li><span>Latitude: </span>:" + entry.latitude_epsg_4326 +"</li><span>Longitude: </span>"+ entry.longitude_epsg_4326 + "</li>";
-		let date = "<li><span>Date of record: </span>" + entry.day +"/"+ entry.month +"/"+ entry.year + "</li>";
+		let date = "<li><span>Date of record: </span>" + day +"/"+ month +"/"+ year + "</li>";
 		let accuracy = "<li><span>Record accuracy: </span>" + entry.accuracy + "</li>";
 		let species = "<li><span>Penguin species: </span>" + entry.common_name + "</li>";
 		let type = "<li><span>Penguin type: </span>" + entry.count_type + "</li>";
 		let amount = "<li><span>Individuals: </span>" + entry.penguin_count + "</li>";
+		let starting_year = "<li><span>Season starting year: </span>" + entry.season_starting + "</li>";
 		let reference = "<h3><span>Reference:</span></h3>" + entry.reference;
 		
-		return name + "<ul>" + position + date + accuracy + species + type + amount +"</ul>"+reference;
+		return name + "<ul>" + position + date + starting_year + accuracy + species + type + amount +"</ul>"+reference;
 	}
 
 });
