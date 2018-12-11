@@ -100,7 +100,7 @@ $( document ).ready(function(){
 	antarctica_map.addLayer(coastline);
 	
 	// add default point data
-	updateMarkers();
+	update_markers();
 
 
 	///////////////////////////
@@ -117,7 +117,7 @@ $( document ).ready(function(){
 			return false;
 		},
 		select: function( event, ui ) {
-			updateMarkers();
+			update_markers();
 			// add reset button
 			$("#clear-search").show();
 		}
@@ -129,7 +129,7 @@ $( document ).ready(function(){
 	///////////////////////////
 	$('#clear-search').click(function() {
 		$("#search-site").val("");
-		updateMarkers();
+		update_markers();
 		$("#clear-search").hide();
 	});
 
@@ -139,26 +139,26 @@ $( document ).ready(function(){
 	///////////////////////////
 	$("#year-slider").on("input", function() {
 		$("#year").html($(this).val());
-		updateMarkers();
+		update_markers();
 	})
 	
 
 	///////////////////////////
 	//     types filter    //
 	///////////////////////////
-	const allTypes = data_penguins.map(entry => entry.count_type);
-	const uniqueTypes = unique(allTypes);
+	const all_types = data_penguins.map(entry => entry.count_type);
+	const unique_types = unique(all_types);
 
 	// build penguins type filter
-	uniqueTypes.forEach(item => {
+	unique_types.forEach(item => {
 		if(item != ""){
 			$("#pen-types-filter").append("<input type='checkbox' name='type' id='"+item+"' value='"+item+"' checked><label for='"+item+"'>"+item+"</label>");
 		}
-		updateMarkers();
+		update_markers();
 	});
 
 	$(".pentype-box").on("click", function() {
-		updateMarkers();
+		update_markers();
 	});
 
 
@@ -167,7 +167,7 @@ $( document ).ready(function(){
 	//    and add markers    //
 	///////////////////////////
 
-	function updateMarkers() {
+	function update_markers() {
 		// data_penguins tmp format reminder:
 		// site_name,site_id,cammlr_region,longitude_epsg_4326,latitude_epsg_4326,
 		// common_name,day,month,year,season_starting,penguin_count,accuracy,count_type,vantage,reference
@@ -188,14 +188,14 @@ $( document ).ready(function(){
 			data_penguins.forEach(item => {
 				if (item.site_name == site && item.year == year && $.inArray(item.count_type,type) > -1) {
 					//console.log(item)
-					addMarker(item);
+					add_marker(item);
 				}
 			})
 		} else {
 			// if no site is specified
 			data_penguins.forEach(item => {
 				if (item.year == year && $.inArray(item.count_type,type) > -1){
-					addMarker(item)
+					add_marker(item)
 				}
 			});
 		}
@@ -213,20 +213,38 @@ $( document ).ready(function(){
 		return [...new Set(array)]
 	}
 
-	function addMarker(entry) {
+	function add_marker(entry) {
 		// build custom pin icon
-		let thisIcon = L.icon({
-			iconUrl : 'icons/' + 'pen_pin_macaroni' + '.png',
+		let pinIcon = L.icon({
+			iconUrl : 'icons/' + 'pen_pin_'+ entry.count_type + '.png',
 			iconSize: [35, 41],
-			iconAnchor: [17.5, 41]
+			iconAnchor: [17.5, 41],
+			popupAnchor: [0, -5]
 		})
 		// build pin
 		let marker = L.marker([entry.latitude_epsg_4326,entry.longitude_epsg_4326],{
-			title: entry.site_id,
-			icon: thisIcon
+			title: entry.site_name,
+			icon: pinIcon
 		});
+
+		// bind marker details to the marker
+		marker.bindPopup(add_marker_details(entry));
+
 		// add markers to the maker layer
-		markers.addLayer(marker);	
+		markers.addLayer(marker);
+	}
+
+	function add_marker_details(entry) {
+		let name = "<h2>" + entry.site_name + " (" + entry.site_id + ")" + "</h2>"
+		let position = "<li><span>Latitude: </span>:" + entry.latitude_epsg_4326 +"</li><span>Longitude: </span>"+ entry.longitude_epsg_4326 + "</li>";
+		let date = "<li><span>Date of record: </span>" + entry.day +"/"+ entry.month +"/"+ entry.year + "</li>";
+		let accuracy = "<li><span>Record accuracy: </span>" + entry.accuracy + "</li>";
+		let species = "<li><span>Penguin species: </span>" + entry.common_name + "</li>";
+		let type = "<li><span>Penguin type: </span>" + entry.count_type + "</li>";
+		let amount = "<li><span>Individuals: </span>" + entry.penguin_count + "</li>";
+		let reference = "<h3><span>Reference:</span></h3>" + entry.reference;
+		
+		return name + "<ul>" + position + date + accuracy + species + type + amount +"</ul>"+reference;
 	}
 
 });
