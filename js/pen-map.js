@@ -249,11 +249,14 @@ $( document ).ready(function(){
 		let pen_type = entry.count_type;
 		if(entry.penguin_count == 0){pen_type="empty"}
 		let pen_species = entry.common_name.replace(/ /g,'_').replace(/é/g,'e');
+		let size_factor = entry.penguin_count / 60000
+		let size_x = (35*size_factor < 35) ? 35 : 35*size_factor;
+		let size_y = (41*size_factor < 41) ? 41 : 41*size_factor;
 
 		let pinIcon = L.icon({
 			iconUrl : 'icons/pen_pin_'+pen_type+'_'+pen_species+'.png',
-			iconSize: [35, 41],
-			iconAnchor: [17.5, 41],
+			iconSize: [size_x, size_y],
+			iconAnchor: [size_x/2, size_y],
 			popupAnchor: [0, -5]
 		})
 		// build pin
