@@ -46,7 +46,7 @@
             </header>
 
             <div class="search ui-widget">
-                <input id="search-site" placeholder="Search a Research Site..." type="search">
+                <input id="search-site" placeholder="Search for a Site..." type="search">
                 <div id="clear-search">
                     <i class="far fa-times-circle"></i>
                 </div>
@@ -61,9 +61,11 @@
             </div>
 
             <div class="type filter">
-                <label>Penguin Types:</label>
+                <label>Record types:</label>
                 <div class="checkbox-container">
-                    <div id="pen-types-filter" class='pentype-box'></div>
+                    <div id="pen-types-filter" class='pentype-box'>
+                        <input type='checkbox' name='type' id='empty' value='empty' checked><label for='empty'>empty</label>
+                    </div>
                 </div>
             </div>
 

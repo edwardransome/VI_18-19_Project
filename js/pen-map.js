@@ -194,8 +194,11 @@ $( document ).ready(function(){
 		} else {
 			// if no site is specified
 			data_penguins.forEach(item => {
-				if (item.year == year && $.inArray(item.count_type,type) > -1){
-					add_marker(item)
+				if (item.year == year){
+					if($.inArray(item.count_type,type) > -1){
+						if($.inArray("empty",type) > -1){add_marker(item)}
+						else{if(item.penguin_count != 0){add_marker(item)}}
+					}
 				}
 			});
 		}
@@ -215,8 +218,10 @@ $( document ).ready(function(){
 
 	function add_marker(entry) {
 		// build custom pin icon
+		let pen_type = entry.count_type;
+		if (entry.penguin_count == 0){pen_type="empty";}
 		let pinIcon = L.icon({
-			iconUrl : 'icons/' + 'pen_pin_'+ entry.count_type + '.png',
+			iconUrl : 'icons/' + 'pen_pin_'+ pen_type + '.png',
 			iconSize: [35, 41],
 			iconAnchor: [17.5, 41],
 			popupAnchor: [0, -5]
