@@ -157,7 +157,29 @@ $( document ).ready(function(){
 		update_markers();
 	});
 
-	$(".pentype-box").on("click", function() {
+	$(".pen-types-box").on("click", function() {
+		update_markers();
+	});
+
+
+	///////////////////////////
+	//     species filter    //
+	///////////////////////////
+	const all_species = data_penguins.map(entry => entry.common_name);
+	const unique_species = unique(all_species);
+
+	// build penguins type filter
+	let counter = 0
+	unique_species.forEach(item => {
+		if(item != ""){
+			item_regex = item.replace(/ /g,'_').replace(/é/g,'e');
+			if(counter++ > 1){$("#pen-species-filter").append("<br/>");counter=0;}
+			$("#pen-species-filter").append("<input type='checkbox' name='type' id='"+item_regex+"' value='"+item_regex+"' checked><label for='"+item_regex+"'>"+item+"</label>");
+		}
+		update_markers();
+	});
+
+	$(".pen-species-box").on("click", function() {
 		update_markers();
 	});
 
@@ -175,7 +197,10 @@ $( document ).ready(function(){
 		// get user filter values
 		let site = $("#search-site").val();
 		let year = $("#year-slider").val();
-		let type = $(".pentype-box input:checked").map(function() {
+		let types = $(".pen-types-box input:checked").map(function() {
+				return $(this)["0"].value
+			}).toArray();
+		let species = $(".pen-species-box input:checked").map(function() {
 				return $(this)["0"].value
 			}).toArray();
 		
@@ -183,10 +208,13 @@ $( document ).ready(function(){
 		// clear map from all markers
 		markers.clearLayers();
 
-		//apply filters
+		// condition builder
+		let type_is_empty = ($.inArray("empty",types) > -1)
+
+		// apply filters
 		if (site) {
 			data_penguins.forEach(item => {
-				if (item.site_name == site && item.year == year && $.inArray(item.count_type,type) > -1) {
+				if (item.site_name == site && item.year == year && $.inArray(item.count_type,types) > -1) {
 					//console.log(item)
 					add_marker(item);
 				}
@@ -195,8 +223,10 @@ $( document ).ready(function(){
 			// if no site is specified
 			data_penguins.forEach(item => {
 				if (item.year == year){
-					if($.inArray("empty",type) > -1 && item.penguin_count == 0){add_marker(item)}
-					if($.inArray(item.count_type,type) > -1 && item.penguin_count > 0){add_marker(item)}
+					if($.inArray(item.common_name.replace(/ /g,'_').replace(/é/g,'e'),species) > -1){
+						if(type_is_empty && item.penguin_count == 0){add_marker(item)}
+						if($.inArray(item.count_type,types) > -1 && item.penguin_count > 0){add_marker(item)}
+					}
 				}
 			});
 		}

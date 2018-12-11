@@ -98,6 +98,10 @@ header p {
 	margin-top: 15px;
 }
 
+.species{
+	margin-top: 15px;
+}
+
 .checkbox-container {
 	display: flex;
 	flex-direction: column;
@@ -108,6 +112,11 @@ header p {
 .type .checkbox-container {
 	margin-top:15px;
 	height: 20px;
+}
+
+.species .checkbox-container {
+	margin-top:15px;
+	height: 40px;
 }
 
 .filters {
