@@ -19,6 +19,17 @@ $( document ).ready(function(){
 	// load penguin dataset
 	const data_penguins = json_loader("data/penguins_18_02_15.json")
 
+	/**
+	 * This heatmap contains only the data that had a lot of datapoints, and that were close together (from the years perspective). It was completed with interpolation
+	 * to make the rendering easy.
+	 * 
+	 * Store the site name and location, which location and then the penguin count from the years 1957 to 2017, with the transparency the marker should be drawn with.
+	 * When the transparency is 10, it means usually interpolated data
+	 * When the transparency is 0, it is the correct data
+	 * When the transparency is going from 100 to 10, we reported the value from the closest known year
+	 */
+	const data_heatmap = json_loader("data/penguins_heatmap.json")
+
 
 	///////////////////////////
 	//       init map        //
@@ -135,6 +146,14 @@ $( document ).ready(function(){
 
 
 	///////////////////////////
+	//     category filter   //
+	///////////////////////////
+	$('#category-filter').change(function() {
+		update_markers();
+	});
+
+
+	///////////////////////////
 	//      year filter      //
 	///////////////////////////
 	$("#year-slider").on("input", function() {
@@ -162,6 +181,27 @@ $( document ).ready(function(){
 	});
 
 
+	
+	///////////////////////////
+	//     map elements      //
+	///////////////////////////
+	$(".mapelements-box").on("click", function() {
+		if ($('#coastline-cb').is(":checked")) {
+			antarctica_map.addLayer(coastline);
+		}
+		else {
+			antarctica_map.removeLayer(coastline);
+		}
+		
+		if ($('#grid-cb').is(":checked")) {
+			antarctica_map.addLayer(graticule);
+		}
+		else{
+			antarctica_map.removeLayer(graticule);
+		}
+	});
+
+
 	///////////////////////////
 	//     apply filters     //
 	//    and add markers    //
@@ -173,6 +213,7 @@ $( document ).ready(function(){
 		// common_name,day,month,year,season_starting,penguin_count,accuracy,count_type,vantage,reference
 
 		// get user filter values
+		let category = $("#category-filter").val();
 		let site = $("#search-site").val();
 		let year = $("#year-slider").val();
 		let type = $(".pentype-box input:checked").map(function() {
@@ -183,26 +224,41 @@ $( document ).ready(function(){
 		// clear map from all markers
 		markers.clearLayers();
 
-		//apply filters
-		if (site) {
-			data_penguins.forEach(item => {
-				if (item.site_name == site && item.year == year && $.inArray(item.count_type,type) > -1) {
-					//console.log(item)
-					add_marker(item);
-				}
-			})
-		} else {
-			// if no site is specified
-			data_penguins.forEach(item => {
-				if (item.year == year){
-					if($.inArray("empty",type) > -1 && item.penguin_count == 0){add_marker(item)}
-					if($.inArray(item.count_type,type) > -1 && item.penguin_count > 0){add_marker(item)}
-				}
+		// Raw data markers
+		if(category === "raw") {
+			//apply filters
+			if (site) {
+				data_penguins.forEach(item => {
+					if (item.site_name == site && item.year == year && $.inArray(item.count_type,type) > -1) {
+						//console.log(item)
+						add_marker(item);
+					}
+				})
+			} else {
+				// if no site is specified
+				data_penguins.forEach(item => {
+					if (item.year == year){
+						if($.inArray("empty",type) > -1 && item.penguin_count == 0){add_marker(item)}
+						if($.inArray(item.count_type,type) > -1 && item.penguin_count > 0){add_marker(item)}
+					}
+				});
+			}
+			
+			// add markers layer to the map
+			antarctica_map.addLayer(markers);
+		}
+		// Heatmap data markers
+		else if(category === "heatmap") {
+			// Show aditionnal controls and informations
+			data_heatmap.forEach(item => {
+				add_heatmap_marker(item)
 			});
 		}
-		
-		// add markers layer to the map
-		antarctica_map.addLayer(markers);
+	}
+
+	function add_heatmap_marker(entry) {
+		// TODO: Render the marker from the correct year (item data start at year 1957 and ends at 2017), scale it depending on the data value to
+		// represent the actual penguin count, and apply the transparency in % (and maybe change color based on it) to represent missing or interpolated data
 	}
 
 	///////////////////////////
