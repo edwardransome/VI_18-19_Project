@@ -36,16 +36,32 @@ $( document ).ready(function(){
 	///////////////////////////
 	//           UX          //
 	///////////////////////////
-	let side_bar_toggle = false;
-	$("#sidebar-toggle").on("click", function() {
-		side_bar_toggle = !side_bar_toggle;
-		if(side_bar_toggle){
-			$('.filters').hide('slide', { direction: 'right', easing: 'swing' }, 500, function(){
-				$("#sidebar-toggle").html('<br><')
+	$(".sidebar-close").on("click", function() {
+		$("#sidebar-open").show('slide', { direction: 'right', easing: 'swing' }, 700);
+		if (!$('.advanced-options').is("hidden")){
+			$('.advanced-options').hide('slide', { direction: 'right', easing: 'swing' }, 500);
+		}
+		$('.filters').hide('slide', { direction: 'right', easing: 'swing' }, 500, function(){
+			
+			});
+	});
+
+	$("#sidebar-open").on("click", function() {
+		$("#sidebar-open").hide('slide', { direction: 'right', easing: 'swing' }, 500);
+		$('.filters').show('slide', { direction: 'right', easing: 'swing' }, 500, function(){
+		});
+	});
+
+	let advanced_toggle = false;
+	$(".advanced-toggle").on("click", function() {
+		advanced_toggle = !advanced_toggle;
+		if(advanced_toggle){
+			$('.filters').hide('slide',{direction: 'left'}, 0, function(){
+				$('.advanced-options').show('slide',{direction: 'left'}, 0);
 			});
 		}else{
-			$('.filters').show('slide', { direction: 'right', easing: 'swing' }, 500, function(){
-				$("#sidebar-toggle").html('<br><')
+			$('.advanced-options').hide('slide', 0, function(){
+				$('.filters').show('slide', 0);
 			});
 		}
 	});

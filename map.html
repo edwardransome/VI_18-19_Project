@@ -41,11 +41,11 @@
 
     
 </head>
-<body>
+<body>    
     <div class="container">
-        <div id="map"></div>
-        <div id="sidebar-toggle"><br/>></div>
+        <div id="map"><div id="sidebar-open">Open Menu</div></div>
         <div class="filters">
+            <div class="sidebar-close">Close</div>
             <header>
                 <h1>Penguins of Antarctica</h1>
                 <p>Interact and Learn.</p>
@@ -58,21 +58,14 @@
                 </div>
             </div>
 
-            <div class="category filter">
-                <label>Choose representation type:</label>
-                <select id="category-filter">
-                    <option value="raw">Raw data</option>
-                    <option value="heatmap">Heatmap</option>
-                    <option value="heatmap-2">Heatmap 2 </option>
-                </select>
-            </div>
-
-            
             <div class="year filter">
                 <label>For given year:</label>
                 <span class="year-label" id="year">2009</span>
                 <br>
-                <input id="year-slider" type="range" min="1895" max="2018" step="1" value="2009">
+                <div class="year-sliders">
+                    <input id="year-slider" type="range" min="1895" max="2018" step="1" value="2009">
+                    <input id="year-start-slider" type="range" min="1895" max="2018" step="1" value="1910">
+                </div>
             </div>
 
             <div class="type filter">
@@ -80,16 +73,6 @@
                 <div class="checkbox-container">
                     <div id="pen-types-filter" class='pen-types-box'>
                         <input type='checkbox' name='type' id='empty' value='empty' checked><label for='empty'>empty</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="type filter">
-                <label>Show map elements:</label>
-                <div class="checkbox-container">
-                    <div id="map-elements-filter" class='mapelements-box'>
-                        <input type='checkbox' name='map-elements' id='coastline-cb' value='coastline' checked><label for='coastline'>Coastline</label>
-                        <input type='checkbox' name='map-elements' id='grid-cb' value='grid' checked><label for='grid'>Grid</label>
                     </div>
                 </div>
             </div>
@@ -111,11 +94,42 @@
             </div>
 
             <footer>
-                <p>Other Antarctica related resources: <a href="https://www.add.scar.org/" target="_blank">Antarctic Digital Database Map Viewer</a>, 
-                    and <a href="http://www.penguinmap.com/mapppd" target="_blank">MAPPPD (Mapping Application for Penguin Populations and Projected Dynamics)</a>
-                    and based on <a href="https://underwaternya.github.io/antarctica-stations-map/" tareget="_blank">Antartica Stations Map</a></p>                
+                <div class="advanced-toggle">Click for Advanced Options</div>
             </footer>
+
         </div>
+        
+        <div class="advanced-options option-panel">
+                <div class="sidebar-close">Close</div>
+                <div class="advanced-toggle" style="float:left;">Back to Filters</div>
+                <header>
+                    <br/><br/><br/><h1>Advanced Options</h1><p>Tweak it, have fun!</p>
+                </header> 
+                
+                <div class="category filter">
+                        <label>Choose representation type:</label>
+                        <select id="category-filter">
+                            <option value="raw">Raw data</option>
+                            <option value="heatmap">Heatmap</option>
+                            <option value="heatmap-2">Heatmap 2 </option>
+                        </select>
+                    </div>
+        
+                    <div class="type filter">
+                        <label>Show map elements:</label>
+                        <div class="checkbox-container">
+                            <div id="map-elements-filter" class='mapelements-box'>
+                                <input type='checkbox' name='map-elements' id='coastline-cb' value='coastline' checked><label for='coastline'>Coastline</label>
+                                <input type='checkbox' name='map-elements' id='grid-cb' value='grid' checked><label for='grid'>Grid</label>
+                            </div>
+                        </div>
+                    </div>
+                <footer>
+                    <p>Other Antarctica related resources: <a href="https://www.add.scar.org/" target="_blank">Antarctic Digital Database Map Viewer</a>, 
+                        and <a href="http://www.penguinmap.com/mapppd" target="_blank">MAPPPD (Mapping Application for Penguin Populations and Projected Dynamics)</a>
+                        and based on <a href="https://underwaternya.github.io/antarctica-stations-map/" tareget="_blank">Antartica Stations Map</a></p>                
+                </footer>
+            </div>
     </div>
 </body>
 </html>
