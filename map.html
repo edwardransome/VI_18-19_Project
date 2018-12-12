@@ -52,6 +52,16 @@
                 </div>
             </div>
 
+            <div class="category filter">
+                <label>Choose representation type:</label>
+                <br>
+                <br>
+                <select id="category-filter">
+                    <option value="raw">Raw data</option>
+                    <option value="heatmap">Heatmap</option>
+                </select>
+            </div>
+
 			
             <div class="year filter">
                 <label>For given year:</label>
@@ -69,6 +79,16 @@
                 </div>
             </div>
 
+            <div class="type filter">
+                <label>Show map elements:</label>
+                <div class="checkbox-container">
+                    <div id="map-elements-filter" class='mapelements-box'>
+                        <input type='checkbox' name='map-elements' id='coastline-cb' value='coastline' checked><label for='coastline'>Coastline</label>
+                        <input type='checkbox' name='map-elements' id='grid-cb' value='grid' checked><label for='grid'>Grid</label>
+                    </div>
+                </div>
+            </div>
+            
             <div class="species filter">
                 <label>Species:</label>
                 <div class="checkbox-container">
