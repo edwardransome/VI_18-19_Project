@@ -35,6 +35,25 @@ $( document ).ready(function(){
 
 
 	///////////////////////////
+	//           UX          //
+	///////////////////////////
+	let side_bar_toggle = false;
+	$("#sidebar-toggle").on("click", function() {
+		side_bar_toggle = !side_bar_toggle;
+		if(side_bar_toggle){
+			$('.filters').hide('slide', { direction: 'right', easing: 'swing' }, 500, function(){
+				$("#sidebar-toggle").html('<br><')
+			});
+		}else{
+			$('.filters').show('slide', { direction: 'right', easing: 'swing' }, 500, function(){
+				$("#sidebar-toggle").html('<br><')
+			});
+
+		}
+	});
+
+
+	///////////////////////////
 	//       init map        //
 	///////////////////////////
 	// The polar projection
