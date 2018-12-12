@@ -276,53 +276,44 @@ $( document ).ready(function(){
 		markers.clearLayers();
 
 		// Raw data markers
-		if(category === "raw") {
+		if(category == "raw") {
 			// condition builder
 			let type_is_empty = ($.inArray("empty",types) > -1)
 
-		// apply filters
-		if (site) {
-			data_penguins.forEach(item => {
-				if (item.site_name == site && item.year == year && $.inArray(item.count_type,types) > -1) {
-					//console.log(item)
-					add_pen_marker(item);
-				}
-			});
-		} else {
-			// if no site is specified
-			data_penguins.forEach(item => {
-				if (item.year == year){
-					if($.inArray(item.common_name.replace(/ /g,'_').replace(/é/g,'e'),species) > -1){
-						if(type_is_empty && item.penguin_count == 0){add_pen_marker(item)}
-						if($.inArray(item.count_type,types) > -1 && item.penguin_count > 0){add_pen_marker(item)}
+			// apply filters
+			if (site) {
+				data_penguins.forEach(item => {
+					if (item.site_name == site && item.year == year && $.inArray(item.count_type,types) > -1) {
+						//console.log(item)
+						add_pen_marker(item);
 					}
-				})
+				});
 			} else {
 				// if no site is specified
 				data_penguins.forEach(item => {
 					if (item.year == year){
 						if($.inArray(item.common_name.replace(/ /g,'_').replace(/é/g,'e'),species) > -1){
-							if(type_is_empty && item.penguin_count == 0){add_marker(item)}
-							if($.inArray(item.count_type,types) > -1 && item.penguin_count > 0){add_marker(item)}
+							if(type_is_empty && item.penguin_count == 0){add_pen_marker(item)}
+							if($.inArray(item.count_type,types) > -1 && item.penguin_count > 0){add_pen_marker(item)}
 						}
 					}
 				});
+				data_comnap.forEach(item => {
+					if (item.year_est <= year){
+						if($.inArray(item.fac_type,humans) > -1){add_hum_marker(item)}
+					}
+				});
 			}
-			
 			// add markers layer to the map
 			antarctica_map.addLayer(markers);
-		}
+		
 		// Heatmap data markers
-		else if(category === "heatmap") {
+		}else if(category == "heatmap") {
 			// Show aditionnal controls and informations
 			data_heatmap.forEach(item => {
 				add_heatmap_marker(item)
 			});
-			data_comnap.forEach(item => {
-				if (item.year_est <= year){
-					if($.inArray(item.fac_type,humans) > -1){add_hum_marker(item)}
-				}
-			});
+			
 		}
 
 
