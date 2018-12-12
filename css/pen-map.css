@@ -61,20 +61,37 @@ body {
 	width: 350px;
 	color: #fff;
 	height: 100%;
+	bottom: 1%;
+	opacity: 0.9;
 }
 
-#sidebar-toggle{
-	position: relative;
-	z-index:100;
-	background: rgba(255,255,255,0.1);
-	height: 40px;
-	width: 20px;
+#sidebar-open{
+	display: none;
+	position: fixed;
+	z-index:99999;
+	background: rgba(255,255,255,0.4);
+	padding: 5px;
 	text-align: center;
 	font-weight: bold;
-	line-height: 10px;
-	font-size: 20px;
-	left: 5px;
+	font-size: 15px;
+	top: 50px;
+	right: 0px;
 	color: #fff;
+	transform: rotate(90deg);
+}
+
+.sidebar-close{
+	position: fixed;
+	z-index:99999;
+	background: rgba(255,255,255,0.4);
+	padding: 5px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 15px;
+	top: 38px;
+	right: 15px;
+	color: #fff;
+	transform: rotate(90deg);
 }
 
 header h1 {
@@ -235,6 +252,14 @@ a {
 	}
 
 	.filters {
+		position: absolute;
+		right: 0;
+		top: 0;
+		z-index: 1;
+		float: right;
+	}
+
+	.advanced-options {
 		position: absolute;
 		right: 0;
 		top: 0;
