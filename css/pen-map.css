@@ -102,6 +102,10 @@ header p {
 	margin-top: 15px;
 }
 
+.humans{
+	margin-top: 15px;
+}
+
 .checkbox-container {
 	display: flex;
 	flex-direction: column;
@@ -115,6 +119,11 @@ header p {
 }
 
 .species .checkbox-container {
+	margin-top:15px;
+	height: 40px;
+}
+
+.humans .checkbox-container {
 	margin-top:15px;
 	height: 40px;
 }
@@ -160,6 +169,10 @@ a {
 }
 
 .site-img img {
+	width: 100%;
+}
+
+.fac-img img {
 	width: 100%;
 }
 

@@ -18,7 +18,9 @@ $( document ).ready(function(){
 	}
 	// load penguin dataset
 	const data_penguins = json_loader("data/penguins_18_02_15.json")
-
+	const data_comnap = json_loader("data/comnap_antarctic_facilities_18_10_18.json")
+	
+	
 
 	///////////////////////////
 	//       init map        //
@@ -56,14 +58,15 @@ $( document ).ready(function(){
 
 	// config attributes for nasa data source
 	const attribs = "Penguins' data &copy; <a href='http://www.penguinmap.com/mapppd' target='_blank'>" +
-		"MAPPPD</a><br>Base Map &copy; <a href='https://wiki.earthdata.nasa.gov/display/GIBS' target='_blank'>" +
+		"MAPPPD</a><br>Humans' data &copy; <a href='https://www.comnap.aq/SitePages/Home.aspx' target='_blank'>" +
+		"Polar Geospatial Center</a><br>Base Map &copy; <a href='https://wiki.earthdata.nasa.gov/display/GIBS' target='_blank'>" +
 		"NASA EOSDIS GIBS</a>";
-	const nasaUrl = 'https://gibs-{s}.earthdata.nasa.gov' +
+	const nasa_layer_url = 'https://gibs-{s}.earthdata.nasa.gov' +
 		'/wmts/epsg3031/best/' +
 		'{layer}/default/{tileMatrixSet}/{z}/{y}/{x}.{format}';
 	
 	// config attributes for blue marble layer
-	const blueMarble = new L.tileLayer(nasaUrl, {
+	const blueMarble = new L.tileLayer(nasa_layer_url, {
 		attribution: attribs, 
 		attributionControl: false,
 	    tileSize: 512,
@@ -78,7 +81,7 @@ $( document ).ready(function(){
 	}).addTo(antarctica_map);
 	
 	// config attributes for graticule layer
-	const graticule = new L.tileLayer(nasaUrl, {   
+	const graticule = new L.tileLayer(nasa_layer_url, {   
 	    tileSize: 512,
 	    layer: "Graticule",
 	    tileMatrixSet: "250m",
@@ -86,7 +89,7 @@ $( document ).ready(function(){
 	});
 
 	// config attributes for coastline layer
-	const coastline = new L.tileLayer(nasaUrl, {
+	const coastline = new L.tileLayer(nasa_layer_url, {
 	    tileSize: 512,
 	    layer: "Coastlines",
 	    tileMatrixSet: "250m",
@@ -183,6 +186,26 @@ $( document ).ready(function(){
 		update_markers();
 	});
 
+	///////////////////////////
+	//      humans filter    //
+	///////////////////////////
+	const all_human_fac = data_comnap.map(entry => entry.fac_type);
+	const unique_human_fac= unique(all_human_fac);
+
+	// build humans facitlities filter
+	counter = 0
+	unique_human_fac.forEach(item => {
+		if(item != ""){
+			if(counter++ > 2){$("#human-facilities-filter").append("<br/>");counter=0;}
+			$("#human-facilities-filter").append("<input type='checkbox' name='type' id='"+item+"' value='"+item+"' checked><label for='"+item+"'>"+item+"</label>");
+		}
+		update_markers();
+	});
+
+	$(".human-facilities-box").on("click", function() {
+		update_markers();
+	});
+
 
 	///////////////////////////
 	//     apply filters     //
@@ -203,8 +226,11 @@ $( document ).ready(function(){
 		let species = $(".pen-species-box input:checked").map(function() {
 				return $(this)["0"].value
 			}).toArray();
-		
+		let humans = $(".human-facilities-box input:checked").map(function() {
+			return $(this)["0"].value
+		}).toArray();
 
+		
 		// clear map from all markers
 		markers.clearLayers();
 
@@ -216,17 +242,22 @@ $( document ).ready(function(){
 			data_penguins.forEach(item => {
 				if (item.site_name == site && item.year == year && $.inArray(item.count_type,types) > -1) {
 					//console.log(item)
-					add_marker(item);
+					add_pen_marker(item);
 				}
-			})
+			});
 		} else {
 			// if no site is specified
 			data_penguins.forEach(item => {
 				if (item.year == year){
 					if($.inArray(item.common_name.replace(/ /g,'_').replace(/é/g,'e'),species) > -1){
-						if(type_is_empty && item.penguin_count == 0){add_marker(item)}
-						if($.inArray(item.count_type,types) > -1 && item.penguin_count > 0){add_marker(item)}
+						if(type_is_empty && item.penguin_count == 0){add_pen_marker(item)}
+						if($.inArray(item.count_type,types) > -1 && item.penguin_count > 0){add_pen_marker(item)}
 					}
+				}
+			});
+			data_comnap.forEach(item => {
+				if (item.year_est <= year){
+					if($.inArray(item.fac_type,humans) > -1){add_hum_marker(item)}
 				}
 			});
 		}
@@ -244,7 +275,7 @@ $( document ).ready(function(){
 		return [...new Set(array)]
 	}
 
-	function add_marker(entry) {
+	function add_pen_marker(entry) {
 		// build custom pin icon
 		let pen_type = entry.count_type;
 		if(entry.penguin_count == 0){pen_type="empty"}
@@ -266,13 +297,13 @@ $( document ).ready(function(){
 		});
 
 		// bind marker details to the marker
-		marker.bindPopup(add_marker_details(entry));
+		marker.bindPopup(add_pen_marker_details(entry));
 
 		// add markers to the maker layer
 		markers.addLayer(marker);
 	}
 
-	function add_marker_details(entry) {
+	function add_pen_marker_details(entry) {
 		let year = (entry.year == null) ? "????" : entry.year;
 		let month = (entry.month == null) ? "??" : entry.month;
 		let day = (entry.day == null) ? "??" : entry.day;
@@ -287,6 +318,43 @@ $( document ).ready(function(){
 		let reference = "<h3><span>Reference:</span></h3>" + entry.reference;
 		
 		return name + "<ul>" + position + date + starting_year + accuracy + species + type + amount +"</ul>"+reference;
+	}
+
+	function add_hum_marker(entry) {
+		// build custom pin icon
+		let size_x = 35;
+		let size_y = 41;
+
+		let pinIcon = L.icon({
+			iconUrl : 'icons/hum_'+'default'+'.png',
+			iconSize: [size_x, size_y],
+			iconAnchor: [size_x/2, size_y],
+			popupAnchor: [0, -5]
+		})
+		// build pin
+		let marker = L.marker([entry.lat_dd,entry.lon_dd],{
+			title: entry.name_eng,
+			icon: pinIcon
+		});
+
+		// bind marker details to the marker
+		marker.bindPopup(add_hum_marker_details(entry));
+
+		// add markers to the maker layer
+		markers.addLayer(marker);
+	}
+
+	function add_hum_marker_details(entry) {
+		let year = (entry.year_est == null) ? "????" : entry.year_est;
+		let name = "<h2>" + entry.name_off + " (" + entry.operator_1 + ")" + "</h2>";
+		let fac = "<li><span>Facility type: </span>" + entry.fac_type +"</li>";
+		let position = "<li><span>Latitude: </span>:" + entry.lat_dd +"</li><span>Longitude: </span>"+ entry.lon_dd + "</li>";
+		let date = "<li><span>Year of installation: </span>" + year +"</li>";
+		let season = "<li><span>Season: </span>" + entry.fac_seas + "</li>";
+		let status = "<li><span>Status: </span>" + entry.fac_stat + "</li>";
+		let photo = (entry.photo_url == null) ? "no picture" : "<h3><span>Photo:</span></h3><br/><div class='fac-img'><img src='" + entry.photo_url + "'></div>";
+		
+		return name + "<ul>" + fac +position + date + season + status +"</ul>"+photo;
 	}
 
 });
