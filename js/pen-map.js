@@ -37,6 +37,7 @@ $( document ).ready(function(){
 	///////////////////////////
 	//           UX          //
 	///////////////////////////
+
 	let side_bar_toggle = false;
 	$("#sidebar-toggle").on("click", function() {
 		side_bar_toggle = !side_bar_toggle;
@@ -48,7 +49,20 @@ $( document ).ready(function(){
 			$('.filters').show('slide', { direction: 'right', easing: 'swing' }, 500, function(){
 				$("#sidebar-toggle").html('<br><')
 			});
+		}
+	});
 
+	let advanced_toggle = false;
+	$(".advanced-toggle").on("click", function() {
+		advanced_toggle = !advanced_toggle;
+		if(advanced_toggle){
+			$('.filters').hide('slide',{direction: 'left'}, 0, function(){
+				$('.advanced-options').show('slide',{direction: 'left'}, 0);
+			});
+		}else{
+			$('.advanced-options').hide('slide', 0, function(){
+				$('.filters').show('slide', 0);
+			});
 		}
 	});
 
