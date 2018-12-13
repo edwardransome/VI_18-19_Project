@@ -77,7 +77,7 @@
                   <span class="section-heading">Data Source</span>
                 </h2>
                   <p>
-                    The main dataset used is the list of all penguin observations in Antarctica (from various sources) compiled by the <a href="http://www.penguinmap.com/">Mapping Application for Penguin Populations and Projected Dynamics</a> (MAPPPD).
+                    The main dataset used is the list of all penguin observations in Antarctica (from various sources) compiled by the Mapping Application for Penguin Populations and Projected Dynamics (<a href="http://www.penguinmap.com/">MAPPPD</a>).
                     For each observation in the dataset, the following data is given:
                     <ul style="list-style-type:disc">
                         <li>The name given to the observation site, as well as the site initials</li>
@@ -87,29 +87,41 @@
                         <li>The accuracy level of the observation (1 being the most accurate, 5 the least)</li>
                         <li>The exact date of the observation</li>
                         <li>The year of the beginning of the season (For example, January 2010 observations belong to a season starting in 2009)</li>
-                        <li>The type of penguin observed (Adults, chicks, nests)</li>
+                        <li>The type of penguin observed (adults, chicks, nests)</li>
                         <li>The source of the observation</li>
                     </ul>
-                    Optionally, we are are providing a visualization for the antarctic facilities (COMNAP).
+                    Optionally, we are are providing a visualization for the antarctic facilities (<a href="https://www.comnap.aq/SitePages/Home.aspx">COMNAP</a>). Which can be freely used for educational purpose.
+                    <ul style="list-style-type:disc">
+                            <li>The facility names given to the installed, as well as its unique identifier</li>
+                            <li>The facility coordinates</li>
+                            <li>The date of installation</li>
+                            <li>The facility type (stations, camps, refuge, airfield camp, laboratory, depot)</li>
+                            <li>The countries owning the facilities</li>
+                            <li>A link to the facility photos</li>
+                        </ul>
                   </p>
                   <h2 class="section-heading mb-4">
                       <span class="section-heading">Features</span>
                   </h2>
                   <p>
-                      Our project is set up as an interactive website, allowing the user to discover the dataset and its implications. Using a menu at the top of each page, the user can browse different sections of the site.</br>
-                      The index of the site is a homepage, allowing access to all the pages.</br>
-                      The map page contains our interactive map, allowing the user to see the locations and species of all observed penguins for any given years, as well as a heatmap of penguin activity.</br>
-                      The penguin page displays a chart of all observations, grouped by month, allowing the user to see how the data is distributed as well as see, for any given parameters, the observations with the most penguins corresponding to those parameters.</br>
-                      The final page is the one you're reading right now!
+                      Our project is set up as an interactive website, allowing the user to discover the dataset and its implications. Using a menu at the top of each page, the user can browse different sections of the site.
+                      <ul style="list-style-type:disc">
+                            <li>The index of the site is a homepage, allowing access to all the pages.</li>
+                            <li>The map page contains our interactive map, allowing the user to see the locations and species of all observed penguins for any given years, as well as a heatmap of penguin activity.</li>
+                            <li>The penguin page displays a chart of all observations, grouped by month, allowing the user to see how the data is distributed as well as see, for any given parameters, the observations with the most penguins corresponding to those parameters.</li>
+                            <li>The final page is the one you're reading right now!
+                    </ul>
                   </p>
                   <h2 class="section-heading mb-4">
                       <span class="section-heading">Technologies</span>
                   </h2>
                   <p>
-                      The website is based on a free to use Bootstrap template from <a href="https://startbootstrap.com/">StartBootstrap</a>. Using a base template, we can quickly start to add our own content without worrying about the basics.</br>
-                      The graphs were creating using <a href="https://d3js.org/">D3.js</a>, <a href="https://dc-js.github.io/dc.js/">dc.js</a> and <a href="http://square.github.io/crossfilter/">Crossfilter</a>.
-                      Using Crossfilter, we can select what data dimensions to consider and natively feed to DC.js graphs, which in turn uses D3.js to render and display them. Crossfilter allows interactive data filtering without completely recreating all graphs, allowing for fast modification of the data displayed.
-                      Regarding the interactive map, we are using the <a href="https://leafletjs.com">Leaflet</a> library and its <a href="https://github.com/GeoSensorWebLab/polarmap.js">polar projection</a> and <a href="http://ursudio.com/webgl-heatmap-leaflet/">webgl heatmap</a>plugins.
+                    <ul style="list-style-type:disc">
+                        <li>The website is based on a free to use Bootstrap template from <a href="https://startbootstrap.com/">StartBootstrap</a>. Using a base template, we can quickly start to add our own content without worrying about the basics.</li>
+                        <li>The graphs were creating using <a href="https://d3js.org/">D3.js</a>, <a href="https://dc-js.github.io/dc.js/">dc.js</a> and <a href="http://square.github.io/crossfilter/">Crossfilter</a>.</li>
+                        <li>Using Crossfilter, we can select what data dimensions to consider and natively feed to DC.js graphs, which in turn uses D3.js to render and display them. Crossfilter allows interactive data filtering without completely recreating all graphs, allowing for fast modification of the data displayed.</li>
+                        <li>Regarding the interactive map, we are using the <a href="https://leafletjs.com">Leaflet</a> library and its <a href="https://github.com/GeoSensorWebLab/polarmap.js">polar projection</a> and <a href="http://ursudio.com/webgl-heatmap-leaflet/">webgl heatmap</a>plugins.</li>
+                    </ul>
                   </p>
                   <h2 class="section-heading mb-4">
                       <span class="section-heading">Usability</span>
@@ -118,12 +130,14 @@
                       TODO : List the usability rules we are following or not.
                   </p>
                       <h2 class="section-heading mb-4">
-                      <span class="section-heading">Sources</span>
+                      <span class="section-heading">Based on</span>
                   </h2>
                   <p>
-                    The interactive graphs is based on:
-                    
-                    The interactive map is based on: <a href="https://github.com/Underwaternya/antarctica-stations-map)">Antarctica Stations Map</a>
+                    With the goal to accelerate the developement process, and data analysis. We built our project based on existing projects.
+                    <ul>
+                        <li>The interactive graphs:</li>
+                        <li>The interactive map: <a href="https://github.com/Underwaternya/antarctica-stations-map">Antarctica Stations Map</a></li>
+                    </ul>
                   </p>
               </div>
             </div>
