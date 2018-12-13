@@ -68,7 +68,7 @@ body {
 #sidebar-open{
 	display: none;
 	position: fixed;
-	z-index:99999;
+	z-index: 100;
 	background: rgba(255,255,255,0.4);
 	padding: 5px;
 	text-align: center;
@@ -82,7 +82,7 @@ body {
 
 .sidebar-close{
 	position: fixed;
-	z-index:99999;
+	z-index: 100;
 	background: rgba(255,255,255,0.4);
 	padding: 5px;
 	text-align: center;
@@ -275,10 +275,9 @@ a {
 	}
 }
 
-.year-sliders input{
-	padding: 0;
-	}
-
+#year-slider-second{
+	display:none;
+}
 
 /* made with http://www.cssportal.com/style-input-range/ */
 input[type=range] {
@@ -377,4 +376,26 @@ input[type=range]:focus::-ms-fill-lower {
 }
 input[type=range]:focus::-ms-fill-upper {
 	background: #89BAE0;
+}
+
+.loading_modal {
+    display: none;
+    position:   absolute;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+body.loading .loading_modal {
+    overflow: hidden;   
+}
+
+body.loading .loading_modal {
+    display: block;
 }

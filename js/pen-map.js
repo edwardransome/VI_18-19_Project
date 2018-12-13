@@ -1,7 +1,7 @@
 var markers = L.layerGroup();
-
-$( document ).ready(function(){
-
+		
+$(document).ready(function(){
+	// $("body").removeClass("loading");
 	///////////////////////////
 	//     load datasets     //
 	///////////////////////////
@@ -194,9 +194,43 @@ $( document ).ready(function(){
 	///////////////////////////
 	//      year filter      //
 	///////////////////////////
+	let current_user_timout;
 	$("#year-slider").on("input", function() {
-		$("#year").html($(this).val());
-		update_markers();
+		display_sorted_years();
+		clearTimeout(current_user_timout);
+		current_user_timout = setTimeout(function(){update_markers();}, 300);
+	})
+
+	$("#year-slider-second").on("input", function() {
+		display_sorted_years();
+		clearTimeout(current_user_timout);
+		current_user_timout = setTimeout(function(){update_markers();}, 300);
+	})
+
+	function display_sorted_years(){
+		let year_1 = $("#year-slider").val();
+		$("#year").html(year_1);
+		let year_2 = 0;
+		if ($("#years-range").is(":checked")){
+			year_2 = $("#year-slider-second").val();
+			$("#year").html((year_1 < year_2) ? year_1 : year_2);
+			$("#year-second").html((year_1 > year_2) ? year_1 : year_2);
+		}
+	}
+
+	$("#years-range").change(function() {
+		if ($("#years-range").is(":checked")){
+			display_sorted_years();
+			$("#year-slider-second").show(0);
+			$("#year-to-label").show(0);
+			$("#year-second").show(0);
+			$("#for-years-label").text("For the given years from:")
+		}else{
+			$("#year-slider-second").hide(0);
+			$("#year-to-label").hide(0);
+			$("#year-second").hide(0);
+			$("#for-years-label").text("For the given year:")
+		}
 	})
 	
 
@@ -295,6 +329,7 @@ $( document ).ready(function(){
 		let category = $("#category-filter").val();
 		let site = $("#search-site").val();
 		let year = $("#year-slider").val();
+		let year_second = $("#year-slider-second").val();
 		let types = $(".pen-types-box input:checked").map(function() {
 				return $(this)["0"].value
 			}).toArray();
@@ -304,40 +339,29 @@ $( document ).ready(function(){
 		let humans = $(".human-facilities-box input:checked").map(function() {
 			return $(this)["0"].value
 		}).toArray();
-
+		
+		
 		
 		// clear map from all markers
 		markers.clearLayers();
 
 		// Raw data markers
 		if(category == "raw") {
-			// condition builder
-			let type_is_empty = ($.inArray("empty",types) > -1)
-
 			// apply filters
-			if (site) {
-				data_penguins.forEach(item => {
-					if (item.site_name == site && item.year == year && $.inArray(item.count_type,types) > -1) {
-						//console.log(item)
-						add_pen_marker(item);
-					}
-				});
-			} else {
-				// if no site is specified
-				data_penguins.forEach(item => {
-					if (item.year == year){
-						if($.inArray(item.common_name.replace(/ /g,'_').replace(/é/g,'e'),species) > -1){
-							if(type_is_empty && item.penguin_count == 0){add_pen_marker(item)}
-							if($.inArray(item.count_type,types) > -1 && item.penguin_count > 0){add_pen_marker(item)}
-						}
-					}
-				});
-				data_comnap.forEach(item => {
-					if (item.year_est <= year){
-						if($.inArray(item.fac_type,humans) > -1){add_hum_marker(item)}
-					}
-				});
+			for (var i = 0, len = data_penguins.length; i < len; i++) {
+				let item = data_penguins[i];
+				if (site){
+					if(item.site_name == site){generic_pen_years_checker(item)}
+				}else{generic_pen_years_checker(item)}
 			}
+
+			for (var i = 0, len = data_comnap.length; i < len; i++) {
+				let item = data_comnap[i];
+				if (item.year_est <= year){
+					if($.inArray(item.fac_type,humans) > -1){add_hum_marker(item)}
+				}
+			}
+
 			// add markers layer to the map
 			antarctica_map.addLayer(markers);
 		
@@ -350,8 +374,23 @@ $( document ).ready(function(){
 			
 		}
 
+		function generic_pen_makers(item){
+			if($.inArray(item.common_name.replace(/ /g,'_').replace(/é/g,'e'),species) > -1){
+				if($.inArray("empty",types) > -1 && item.penguin_count == 0){add_pen_marker(item)}
+				if($.inArray(item.count_type,types) > -1 && item.penguin_count > 0){add_pen_marker(item)}
+			}
+		}
 
+		function generic_pen_years_checker(item){
+			if ($("#years-range").is(":checked")){
+				if (item.year <= year && item.year >= year_second){generic_pen_makers(item)}
+			}else{
+				if (item.year == year){generic_pen_makers(item)}
+			}
+		}
 	}
+
+	
 
 	function add_heatmap_marker(entry) {
 		// TODO: Render the marker from the correct year (item data start at year 1957 and ends at 2017), scale it depending on the data value to
@@ -366,6 +405,12 @@ $( document ).ready(function(){
 	function unique(array) {
 		return [...new Set(array)]
 	}
+
+	async function asyncForEach(array, callback) {
+		for (let index = 0; index < array.length; index++) {
+		  await callback(array[index], index, array);
+		}
+	  }
 
 	function add_pen_marker(entry) {
 		// build custom pin icon
@@ -448,6 +493,8 @@ $( document ).ready(function(){
 		
 		return name + "<ul>" + fac +position + date + season + status +"</ul>"+photo;
 	}
+	$("body").addClass("loading");
+	$("body").removeClass("loading");
 
 });
 

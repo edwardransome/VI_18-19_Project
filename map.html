@@ -38,13 +38,18 @@
 </head>
 <body>    
     <div class="container">
-        <div id="map"><div id="sidebar-open">Open Menu</div></div>
+        <div id="map">
+            <div id="sidebar-open">Open Menu</div>
+        </div>
         <div class="filters">
             <div class="sidebar-close">Close</div>
+            <div class="loading_modal"></div>
             <header>
                 <h1>Penguins of Antarctica</h1>
                 <p>Interact and Learn.</p>
             </header>
+
+            
 
             <div class="search ui-widget">
                 <input id="search-site" placeholder="Search for a Site..." type="search">
@@ -54,13 +59,18 @@
             </div>
 
             <div class="year filter">
-                <label>For given year:</label>
+                <label id="for-years-label">For the given year:</label>
                 <span class="year-label" id="year">2009</span>
+                <span id="year-to-label" style="display:none;">to</span>
+                <span class="year-label" style="display:none;" id="year-second">1910</span>
                 <br>
+                
                 <div class="year-sliders">
                     <input id="year-slider" type="range" min="1895" max="2018" step="1" value="2009">
-                    <input id="year-start-slider" type="range" min="1895" max="2018" step="1" value="1910">
+                    <input id="year-slider-second" type="range" min="1895" max="2018" step="1" value="1910">
                 </div>
+                <br/><input type='checkbox' name='years-range' id='years-range' value='years-range'><label for='years-range'>years in range</label>
+                
             </div>
 
             <div class="type filter">
