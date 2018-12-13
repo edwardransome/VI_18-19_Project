@@ -39,9 +39,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav mx-auto">
               <li class="nav-item px-lg-4">
-                  <a class="nav-link text-uppercase text-expanded" href="index.html">Home
-                      <span class="sr-only">(current)</span>
-                  </a>
+                  <a class="nav-link text-uppercase text-expanded" href="index.html">Home</a>
               </li>
               <li class="nav-item px-lg-4">
                   <a class="nav-link text-uppercase text-expanded" href="map-page.html">Interactive Map</a>
@@ -50,7 +48,9 @@
                   <a class="nav-link text-uppercase text-expanded" href="penguins.html">Penguins</a>
               </li>
               <li class="nav-item active px-lg-4">
-                  <a class="nav-link text-uppercase text-expanded" href="report.html">Report</a>
+                  <a class="nav-link text-uppercase text-expanded" href="report.html">Report
+                      <span class="sr-only">(current)</span>
+                  </a>
               </li>
               <li class="nav-item px-lg-4">
                 <a class="nav-link text-uppercase text-expanded" href="slides.html">Slides</a>
@@ -71,7 +71,7 @@
                   <span class="section-heading">Project goals</span>
                 </h2>
                 <p>
-                    The objective of the project is to study the populations of the different types of penguins living in Antarctica.
+                    The objective of the project is to offer a visualisation of the populations of the different types of penguins living in Antarctica.
                 </p>
                 <h2 class="section-heading mb-4">
                   <span class="section-heading">Data Source</span>
@@ -127,8 +127,32 @@
                       <span class="section-heading">Usability</span>
                   </h2>
                   <p>
+                      Here are the rules of usability according to
+                      <a href="http://www.catb.org/%7Eesr/writings/taouu/html/ch01s03.html">Eric Steven Raymond and Rob W. Landley</a>
+                      and wether the interactive map is compliant to those rules or not.
                       TODO : List the usability rules we are following or not.
                   </p>
+
+                  <ul style="list-style-type:disc">
+                      <li><b>Rule of Bliss :</b> The user is able to understand the map without prior knowledge of the UI. The time slider and filters are self-explainatory, and advanced settings are hidden by default.
+                      However, a few minutes of exploration are necessary to understand all the different types of available information (population, sites, nests).</li>
+                      <li><b>Rule of Distractions : </b>The UI doesn't require sustained attention from the user.</li>
+                      <li><b>Rule of Flow : </b>The UI doesn't disrupt the user's focus with pop-ups or anything.</li>
+                      <li><b>Rule of Documentation : </b>The interface needs a bit of an introduction to explain the meaning of the underlying data, which is an infraction to the rule of documentation.</li>
+                      <li><b>Rule of Least Surprise : </b>The UI doesn't try to impress with anything exotic or novel.</li>
+                      <li><b>Rule of Transparency : </b>The user doesn't need to memorize the state of the application unless he hides the filters.</li>
+                      <li><b>Rule of Modelessness : </b>The UI doesn't react to inputs differently depending on a hidden mode.</li>
+                      <li><b>Rule of Seven : </b>The UI shouldn't have more than seven control elements on the screen, or the user might forget their function. Unfortunately, it does.</li>
+                      <li><b>Rule of Reversibility : </b>The UI doesn't have any destructive operation. As such, it doesn't require an "undo" button. Each input can be cancelled by repeating it once.</li>
+                      <li><b>Rule of Confirmation : </b>The UI doesn't use confirmation prompts.</li>
+                      <li><b>Rule of Failure : </b>Failures should be informative. Our UI doesn't fail.</li>
+                      <li><b>Rule of Silence : </b>When nothing surprising happens, the UI should stay silent. Our map doesn't even have sound at all.</li>
+                      <li><b>Rule of Automation : </b>Automate the input of information that can be deduced. There's not much to automate on our UI but the autocompletion of the site names (which is implemented).</li>
+                      <li><b>Rule of Defaults : </b>Choose safe defaults. The default filters hide data such as human facilities, which would introduce too much visual noise on a first visit.</li>
+                      <li><b>Rule of Respect : </b>The UI should be as simple as possible. It's not, as some filters are rarely useful ("record types").</li>
+                      <li><b>Rule of Predictability : </b>Again, the UI doesn't do anything surprising, and the user instinctively knows he can click penguins to show more info, check filters to activate them, select a year with the slider, and zoom and pan with the mouse and scroll wheel.</li>
+                      <li><b>Rule of Reality : </b>User testing is important, be we were out of time to test it on a good sample of potential users.</li>
+                  </ul>
                       <h2 class="section-heading mb-4">
                       <span class="section-heading">Based on</span>
                   </h2>
