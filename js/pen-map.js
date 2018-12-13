@@ -442,6 +442,9 @@ $(document).ready(function(){
 			//heatmapLayer.setData(testData);
 			heatmap.setData(heatmapData);
 			antarctica_map.addLayer( heatmap );
+
+			
+			$("body").removeClass("loading");
 		}
 		else if(category == "heatmap-2") {
 			// Show aditionnal controls and informations
@@ -449,6 +452,8 @@ $(document).ready(function(){
 				//if(item.Penguin == "Gentoo")
 					add_heatmap_marker(item, year)
 			});
+			
+			$("body").removeClass("loading");
 		}
 
 		function generic_pen_makers(item){
