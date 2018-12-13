@@ -568,12 +568,12 @@ $(document).ready(function(){
 		let penguin_count = parseInt(entry.penguin_count);
 		let pen_species = entry.common_name.replace(/ /g,'_').replace(/é/g,'e');
 		if(target_marker){
-			penguin_count += parseInt(target_marker.options.penguin_count);
 			markers.removeLayer(target_marker)
+			penguin_count += parseInt(target_marker.options.penguin_count);		
 		}
 
 		if(penguin_count == 0){pen_type="empty"}
-		let size_factor = penguin_count / 60000
+		let size_factor = penguin_count / 80000;
 		let size_x = (35*size_factor < 35) ? 35 : 35*size_factor;
 		let size_y = (41*size_factor < 41) ? 41 : 41*size_factor;
 

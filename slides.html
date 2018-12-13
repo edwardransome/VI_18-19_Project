@@ -8,8 +8,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>PenguinMap</title>
-
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -19,31 +17,28 @@
 
     <!-- Custom styles for this template -->
     <link href="css/business-casual.min.css" rel="stylesheet">
-
-
+    <title>PenguinMap - Slides</title>
 
   </head>
 
   <body>
 
-    <h1 class="site-heading text-center text-white d-none d-lg-block">
-      <span class="site-heading-upper text-primary mb-3">I love me some goddamn </span>
-      <span class="site-heading-lower">PENGUINS</span>
-    </h1>
+  <h1 class="site-heading text-center text-white d-none d-lg-block">
+    <span class="site-heading-upper text-primary mb-3">I love me some goddamn </span>
+    <span class="site-heading-lower">PENGUINS</span>
+  </h1>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
       <div class="container">
-        <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="#">Start Bootstrap</a>
+        <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="#">PENGUINS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav mx-auto">
-            <li class="nav-item active px-lg-4">
-              <a class="nav-link text-uppercase text-expanded" href="index.html">Home
-                <span class="sr-only">(current)</span>
-              </a>
+            <li class="nav-item px-lg-4">
+              <a class="nav-link text-uppercase text-expanded" href="index.html">Home</a>
             </li>
             <li class="nav-item px-lg-4">
               <a class="nav-link text-uppercase text-expanded" href="map-page.html">Interactive Map</a>
@@ -54,38 +49,51 @@
             <li class="nav-item px-lg-4">
               <a class="nav-link text-uppercase text-expanded" href="report.html">Report</a>
             </li>
-            <li class="nav-item px-lg-4">
-                <a class="nav-link text-uppercase text-expanded" href="slides.html">Slides</a>
-              </li>
+            <li class="nav-item active px-lg-4">
+              <a class="nav-link text-uppercase text-expanded" href="slides.html">Slides</a>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <section class="page-section clearfix">
-      <div class="container">
-        <div class="intro">
-          <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="img/penguin.jpg" alt="">
-          <div class="intro-text left-0 text-center bg-faded p-5 rounded">
-            <h2 class="section-heading mb-4">
-              <span class="section-heading-upper">Penguins</span>
-              <span class="section-heading-lower">Worth Waddling</span>
-            </h2>
-            <p class="mb-3">
-                Welcome to our mini-site dedicated to penguins, enjoy your stay !
-            </p>
-            <div class="intro-button mx-auto">
-              <a class="btn btn-primary btn-xl" href="./penguins.html">Show me penguins !</a>
+  <section class="page-section about-heading">
+    <div class="container">
+      <div class="about-heading-content">
+        <div class="row">
+          <div class="col-xl-9 col-lg-10 mx-auto">
+            <div class="bg-faded rounded p-5">
+              <h2 class="section-heading mb-4">
+                <span class="section-heading-lower">Presentation</span>
+              </h2>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
+
+  <!-- MAP EMBEDDING -->
+    <div class="container">
+      <iframe height="800" width="1100" src="https://docs.google.com/presentation/d/e/2PACX-1vTI3nFcUxIEpGbWtMIdJBUAKeLDytwtEua7AAz8cOQRTBcoVqeaK0xgAOtxVggmlq0v4r0HV-KC2ymb/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+    </div>
+
+
     <footer class="footer text-faded text-center py-5">
-        <div class="container">
-            <p class="m-0 small">Corentin Barman, Romain Claret, Antoine Friant, Edward Ransome</p>
-        </div>
+      <div class="container">
+        <p class="m-0 small">Corentin Barman, Romain Claret, Antoine Friant, Edward Ransome</p>
+      </div>
     </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
   </body>
+
+  <!-- Script to highlight the active date in the hours list -->
+  <script>
+    $('.list-hours li').eq(new Date().getDay()).addClass('today');
+  </script>
 
 </html>
