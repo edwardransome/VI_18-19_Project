@@ -271,15 +271,16 @@ $(document).ready(function(){
 	const unique_types = unique(all_types);
 
 	// build penguins type filter
-	unique_types.forEach(item => {
+	for(var i = 0; i < unique_types.length; i++) {
+		$("body").addClass("loading");
+		item = unique_types[i];
 		if(item != ""){
 			$("#pen-types-filter").append("<input type='checkbox' name='type' id='"+item+"' value='"+item+"' checked><label for='"+item+"'>"+item+"</label>");
 		}
-		$("body").addClass("loading");
 		setTimeout(function(){
 			update_markers();
 		},ui_timeout)
-	});
+	}
 
 	$(".pen-types-box").on("click", function() {
 		$("body").addClass("loading");
@@ -297,17 +298,18 @@ $(document).ready(function(){
 
 	// build penguins type filter
 	let counter = 0
-	unique_species.forEach(item => {
+	for(var i = 0; i < unique_species.length; i++) {
+		$("body").addClass("loading");
+		item = unique_species[i];
 		if(item != ""){
 			item_regex = item.replace(/ /g,'_').replace(/é/g,'e');
 			if(counter++ > 1){$("#pen-species-filter").append("<br/>");counter=0;}
 			$("#pen-species-filter").append("<input type='checkbox' name='type' id='"+item_regex+"' value='"+item_regex+"' checked><label for='"+item_regex+"'>"+item+"</label>");
 		}
-		$("body").addClass("loading");
 		setTimeout(function(){
 			update_markers();
 		},ui_timeout)
-	});
+	}
 
 	$(".pen-species-box").on("click", function() {
 		$("body").addClass("loading");
@@ -324,7 +326,9 @@ $(document).ready(function(){
 
 	// build humans facitlities filter
 	counter = 0
-	unique_human_fac.forEach(item => {
+	for(var i = 0; i < unique_human_fac.length; i++) {
+		$("body").addClass("loading");
+		item = unique_human_fac[i];
 		if(item != ""){
 			if(counter++ > 2){$("#human-facilities-filter").append("<br/>");counter=0;}
 			$("#human-facilities-filter").append("<input type='checkbox' name='type' id='"+item+"' value='"+item+"'><label for='"+item+"'>"+item+"</label>");
@@ -333,7 +337,7 @@ $(document).ready(function(){
 		setTimeout(function(){
 			update_markers();
 		},ui_timeout)
-	});
+	}
 
 	$(".human-facilities-box").on("click", function() {
 		$("body").addClass("loading");
@@ -531,13 +535,6 @@ $(document).ready(function(){
 	function unique(array) {
 		return [...new Set(array)]
 	}
-
-	async function asyncForEach(array, callback) {
-		for (let index = 0; index < array.length; index++) {
-		  await callback(array[index], index, array);
-		}
-	  }
-
 	
 	function add_pen_marker(entry) {
 
