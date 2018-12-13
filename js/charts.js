@@ -1,8 +1,9 @@
 window.timeChartObs = dc.lineChart("#time-chart-obs");
-window.timeChartCount = dc.lineChart("#time-chart-count");
+//window.timeChartCount = dc.lineChart("#time-chart-count");
 window.dataTable = dc.dataTable("#data-table");
 window.timeBar = dc.barChart("#time-bar");
 window.penguinChart = dc.rowChart("#penguin-chart");
+window.penguinTypePie = dc.pieChart("#penguin-type-pie");
 window.yearPie = dc.pieChart("#year-pie");
 
 function getName(common_name){
@@ -36,11 +37,14 @@ d3.csv("data/penguins_23_11_18.csv", (data) => {
     const penguinGroup = penguinDimension.group();
 
     //const observationDimension = ndx.dimension(d => d3.time.month(d.date));
-    const observationDimension = ndx.dimension(d => d.date);
+    const observationDimension = ndx.dimension(d => d3.time.month(d.date));
 
     const observationGroup = observationDimension.group().reduceCount(d => d.date);
     const observationCountGroup = observationDimension.group().reduceSum(d => d.penguin_count);
     const countDimension = ndx.dimension(d => d.penguin_count);
+
+    const observationTypeDimension = ndx.dimension(d => d.count_type);
+    const observationTypeGroup = observationTypeDimension.group(); 
 
     const yearDimension = ndx.dimension(d => d.year);
     const yearGroup = yearDimension.group();
@@ -66,26 +70,26 @@ d3.csv("data/penguins_23_11_18.csv", (data) => {
     .title(d => `${shortFormat(d.key)}\nNumber of observations : ${d.value}`)
     .xAxis();
 
-    timeChartCount
-    .renderArea(true)
-    .width(990)
-    .height(270)
-    .transitionDuration(500)
-    .margins({
-      top: 30, right: 50, bottom: 25, left: 40,
-    })
-    .dimension(observationDimension)
-    .group(observationCountGroup)
-    .rangeChart(timeBar)
-    .brushOn(false)
-    .mouseZoomable(false)
-    .x(d3.time.scale().domain(d3.extent(data, d => d.date)))
-    .round(d3.time.month.round)
-    .xUnits(d3.time.months)
-    .elasticY(true)
-    .renderHorizontalGridLines(true)
-    .title(d => `${shortFormat(d.key)}\nTotal penguin count in observations : ${d.value}`)
-    .xAxis();
+    // timeChartCount
+    // .renderArea(true)
+    // .width(990)
+    // .height(270)
+    // .transitionDuration(500)
+    // .margins({
+    //   top: 30, right: 50, bottom: 25, left: 40,
+    // })
+    // .dimension(observationDimension)
+    // .group(observationCountGroup)
+    // .rangeChart(timeBar)
+    // .brushOn(false)
+    // .mouseZoomable(false)
+    // .x(d3.time.scale().domain(d3.extent(data, d => d.date)))
+    // .round(d3.time.month.round)
+    // .xUnits(d3.time.months)
+    // .elasticY(true)
+    // .renderHorizontalGridLines(true)
+    // .title(d => `${shortFormat(d.key)}\nTotal penguin count in observations : ${d.value}`)
+    // .xAxis();
 
 
     // Time bar
@@ -105,6 +109,21 @@ d3.csv("data/penguins_23_11_18.csv", (data) => {
     .xUnits(d3.time.months)
     .yAxis()
     .tickFormat(v => '');
+
+    penguinTypePie.width(300)
+    .height(300)
+    .radius(100)
+    .innerRadius(30)
+    .dimension(observationTypeDimension)
+    .title((d) => {
+        let label = d.key;
+        if (all.value()) {
+        label += ` (${Math.floor(d.value / all.value() * 100)}%)`;
+        }
+        return `${label}\nNumber of observations : ${d.value}`;
+    })
+    .group(observationTypeGroup);
+
 
     yearPie.width(300)
     .height(300)

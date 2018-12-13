@@ -20,6 +20,10 @@
     <!-- Custom styles for this template -->
     <link href="css/business-casual.min.css" rel="stylesheet">
 
+    <!-- dc.js styles -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/dc/3.0.9/dc.css" rel="stylesheet">
+
+
   </head>
 
   <body>
@@ -91,6 +95,19 @@
             <div class="clearfix"></div>
           </div>
 
+          <div class='span4' id='penguin-type-pie'>
+
+            <strong>Penguin type</strong>
+            <a class="reset"
+               href="javascript:penguinTypePie.filterAll();dc.redrawAll();"
+               style="display: none;">
+              reset
+            </a>
+
+            <div class="clearfix"></div>
+          </div>
+
+
           <div class='span4' id='year-pie'>
 
             <strong>Observation year</strong>
@@ -106,17 +123,11 @@
 
         </div>
 
-        <div class="row">
-          <div class='span12' id="time-bar">
-            <strong>Select time range on this chart</strong>
-
-          </div>
-        </div>
 
 
         <div class="row">
           <div class='span12' id="time-chart-obs">
-            <strong>Observations by month</strong>
+            <strong>Observations by month</strong></br>
             <a class="reset"
                href="javascript:timeChartObs.filterAll();timeBar.filterAll();dc.redrawAll();"
                style="display: none;"> reset</a>
@@ -125,6 +136,14 @@
         </div>
 
         <div class="row">
+          <div class='span12' id="time-bar">
+            <strong>Select time range on this chart</strong>
+
+          </div>
+        </div>
+
+
+        <!-- <div class="row">
           <div class='span12' id="time-chart-count">
             <strong>Total penguin count for selected observations</strong>
             <a class="reset"
@@ -132,7 +151,7 @@
                style="display: none;"> reset</a>
             <span class="reset" style="display: none;">Current filter: <span class="filter"></span></span>
           </div>
-        </div>
+        </div> -->
 
 
         <div class="row">
