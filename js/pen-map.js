@@ -20,8 +20,6 @@ $(document).ready(function(){
 	const data_penguins = json_loader("data/penguins_18_02_15.json")
 	const data_comnap = json_loader("data/comnap_antarctic_facilities_18_10_18.json")
 	
-	
-
 	/**
 	 * This heatmap contains only the data that had a lot of datapoints, and that were close together (from the years perspective). It was completed with interpolation
 	 * to make the rendering easy.
@@ -32,6 +30,7 @@ $(document).ready(function(){
 	 * When the transparency is going from 100 to 10, we reported the value from the closest known year
 	 */
 	const data_heatmap = json_loader("data/penguins_heatmap.json")
+	const data_heatmap_full = json_loader("data/penguins_heatmap_full.json")
 
 
 	///////////////////////////
@@ -147,7 +146,16 @@ $(document).ready(function(){
 	antarctica_map.addLayer(blueMarble);
 	antarctica_map.addLayer(graticule);
 	antarctica_map.addLayer(coastline);
+
+	var heatmap = new L.webGLHeatmap({
+		size: 200000,
+	});
+
 	
+	antarctica_map.on('zoomend', function() {
+		update_markers();
+	})
+
 	// add default point data
 	update_markers();
 
@@ -344,6 +352,7 @@ $(document).ready(function(){
 		
 		// clear map from all markers
 		markers.clearLayers();
+		antarctica_map.removeLayer(heatmap);
 
 		// Raw data markers
 		if(category == "raw") {
@@ -366,12 +375,35 @@ $(document).ready(function(){
 			antarctica_map.addLayer(markers);
 		
 		// Heatmap data markers
-		}else if(category == "heatmap") {
+		}
+		else if(category == "heatmap") {
+			var index = 0;
+
+			if(year < 1900)
+				index = 0;
+			else if(year > 2018)
+				index = 2018 - 1900;
+			else
+				index = year - 1900;
+
+			var heatmapData = [];
+
+			for(var i = 0; i < data_heatmap_full.length; i++) {
+				if(data_heatmap_full[i].Transparency[index] < 35) {
+					heatmapData.push([data_heatmap_full[i].Latitude, data_heatmap_full[i].Longitude, Math.sqrt(data_heatmap_full[i].Data[index]) / 100]);
+				}
+			}
+
+			//heatmapLayer.setData(testData);
+			heatmap.setData(heatmapData);
+			antarctica_map.addLayer( heatmap );
+		}
+		else if(category == "heatmap-2") {
 			// Show aditionnal controls and informations
-			data_heatmap.forEach(item => {
-				add_heatmap_marker(item)
+			data_heatmap_full.forEach(item => {
+				//if(item.Penguin == "Gentoo")
+					add_heatmap_marker(item, year)
 			});
-			
 		}
 
 		function generic_pen_makers(item){
@@ -390,11 +422,64 @@ $(document).ready(function(){
 		}
 	}
 
-	
+	function add_heatmap_marker(entry, year) {
+		var index = 0;
 
-	function add_heatmap_marker(entry) {
-		// TODO: Render the marker from the correct year (item data start at year 1957 and ends at 2017), scale it depending on the data value to
-		// represent the actual penguin count, and apply the transparency in % (and maybe change color based on it) to represent missing or interpolated data
+		if(year < 1900)
+			index = 0;
+		else if(year > 2018)
+			index = 2018 - 1900;
+		else
+			index = year - 1900;
+
+
+		let opacity = (100.0 - entry.Transparency[index]) / 100.0;
+
+		opacity /= 2;
+
+		let count = entry.Data[index];
+
+		if(count > 10000)
+			count = 10000;
+
+		var achenSvgString = "";
+
+		if(entry.Transparency[index] < 25) {
+			achenSvgString = "<svg xmlns='http://www.w3.org/2000/svg' height='100' width='100' fill-opacity='" + opacity + "'><circle cx='50' cy='50' r='40' fill='red'/></svg>";
+		}
+		else {
+			achenSvgString = "<svg xmlns='http://www.w3.org/2000/svg' height='100' width='100' fill-opacity='" + opacity + "'><circle cx='50' cy='50' r='40' fill='red'/></svg>";
+		}
+
+		
+		let myIconUrl = encodeURI("data:image/svg+xml," + achenSvgString).replace('#','%23');
+
+		var iconSize = 0;
+
+		if(count != 0)
+			iconSize = Math.sqrt(count) / 3 * (antarctica_map.getZoom()+1)
+
+		let pinIcon = L.icon({
+			iconUrl : myIconUrl,
+			iconSize:  iconSize
+		})
+
+		let marker = L.marker([entry.Latitude,entry.Longitude],{
+			title: entry.SiteName,
+			icon: pinIcon
+		});
+
+		marker.bindPopup(add_heatmap_marker_details(entry, index));
+		markers.addLayer(marker);
+	}
+
+	function add_heatmap_marker_details(entry, index) {
+		let name = "<h2>" + entry.SiteName + "</h2>";
+		let position = "<li><span>Latitude: </span>:" + entry.Latitude +"</li><span>Longitude: </span>"+ entry.Longitude + "</li>";
+		let species = "<li><span>Penguin species: </span>" + entry.Penguin + "</li>";
+		let amount = "<li><span>Individuals: </span>" + entry.Data[index] + "</li>";
+		
+		return name + "<ul>" + position + species + amount +"</ul>";
 	}
 
 	///////////////////////////
