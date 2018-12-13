@@ -1,7 +1,8 @@
-var markers = L.layerGroup();
+let markers = L.layerGroup();
 		
 $(document).ready(function(){
-	// $("body").removeClass("loading");
+	let ui_timeout = 10;
+	$("body").removeClass("loading");
 	///////////////////////////
 	//     load datasets     //
 	///////////////////////////
@@ -174,7 +175,10 @@ $(document).ready(function(){
 			return false;
 		},
 		select: function( event, ui ) {
-			update_markers();
+			$("body").addClass("loading");
+			setTimeout(function(){
+				update_markers();
+			},ui_timeout)
 			// add reset button
 			$("#clear-search").show();
 		}
@@ -186,7 +190,10 @@ $(document).ready(function(){
 	///////////////////////////
 	$('#clear-search').click(function() {
 		$("#search-site").val("");
-		update_markers();
+		$("body").addClass("loading");
+		setTimeout(function(){
+			update_markers();
+		},ui_timeout)
 		$("#clear-search").hide();
 	});
 
@@ -195,7 +202,10 @@ $(document).ready(function(){
 	//     category filter   //
 	///////////////////////////
 	$('#category-filter').change(function() {
-		update_markers();
+		$("body").addClass("loading");
+		setTimeout(function(){
+			update_markers();
+		},ui_timeout)
 	});
 
 
@@ -206,13 +216,19 @@ $(document).ready(function(){
 	$("#year-slider").on("input", function() {
 		display_sorted_years();
 		clearTimeout(current_user_timout);
-		current_user_timout = setTimeout(function(){update_markers();}, 300);
+		$("body").addClass("loading");
+		current_user_timout = setTimeout(function(){
+			update_markers();
+		}, 300);
 	})
 
 	$("#year-slider-second").on("input", function() {
 		display_sorted_years();
 		clearTimeout(current_user_timout);
-		current_user_timout = setTimeout(function(){update_markers();}, 300);
+		$("body").addClass("loading");
+		current_user_timout = setTimeout(function(){
+			update_markers();
+		}, 300);
 	})
 
 	function display_sorted_years(){
@@ -239,6 +255,12 @@ $(document).ready(function(){
 			$("#year-second").hide(0);
 			$("#for-years-label").text("For the given year:")
 		}
+		$("body").addClass("loading");
+		setTimeout(function(){
+			update_markers();
+		},ui_timeout)
+		
+		
 	})
 	
 
@@ -253,11 +275,17 @@ $(document).ready(function(){
 		if(item != ""){
 			$("#pen-types-filter").append("<input type='checkbox' name='type' id='"+item+"' value='"+item+"' checked><label for='"+item+"'>"+item+"</label>");
 		}
-		update_markers();
+		$("body").addClass("loading");
+		setTimeout(function(){
+			update_markers();
+		},ui_timeout)
 	});
 
 	$(".pen-types-box").on("click", function() {
-		update_markers();
+		$("body").addClass("loading");
+		setTimeout(function(){
+			update_markers();
+		},ui_timeout)
 	});
 
 
@@ -275,11 +303,17 @@ $(document).ready(function(){
 			if(counter++ > 1){$("#pen-species-filter").append("<br/>");counter=0;}
 			$("#pen-species-filter").append("<input type='checkbox' name='type' id='"+item_regex+"' value='"+item_regex+"' checked><label for='"+item_regex+"'>"+item+"</label>");
 		}
-		update_markers();
+		$("body").addClass("loading");
+		setTimeout(function(){
+			update_markers();
+		},ui_timeout)
 	});
 
 	$(".pen-species-box").on("click", function() {
-		update_markers();
+		$("body").addClass("loading");
+		setTimeout(function(){
+			update_markers();
+		},ui_timeout)
 	});
 
 	///////////////////////////
@@ -293,13 +327,19 @@ $(document).ready(function(){
 	unique_human_fac.forEach(item => {
 		if(item != ""){
 			if(counter++ > 2){$("#human-facilities-filter").append("<br/>");counter=0;}
-			$("#human-facilities-filter").append("<input type='checkbox' name='type' id='"+item+"' value='"+item+"' checked><label for='"+item+"'>"+item+"</label>");
+			$("#human-facilities-filter").append("<input type='checkbox' name='type' id='"+item+"' value='"+item+"'><label for='"+item+"'>"+item+"</label>");
 		}
-		update_markers();
+		$("body").addClass("loading");
+		setTimeout(function(){
+			update_markers();
+		},ui_timeout)
 	});
 
 	$(".human-facilities-box").on("click", function() {
-		update_markers();
+		$("body").addClass("loading");
+		setTimeout(function(){
+			update_markers();
+		},ui_timeout)
 	});
 
 
@@ -373,6 +413,7 @@ $(document).ready(function(){
 
 			// add markers layer to the map
 			antarctica_map.addLayer(markers);
+			$("body").removeClass("loading");
 		
 		// Heatmap data markers
 		}
@@ -497,12 +538,45 @@ $(document).ready(function(){
 		}
 	  }
 
+	
 	function add_pen_marker(entry) {
+
+		let markers_keys = Object.keys(markers._layers);
+		let entry_lat = entry.latitude_epsg_4326;
+		let entry_long = entry.longitude_epsg_4326;
+
+		//console.log(markers_keys.length)
+
+		if (markers_keys.length==0){
+			add_current_marker(entry);
+		}else{
+			for (let i=0, l=markers_keys.length; i<l; i++){
+				//console.log(markers._layers[markers_keys[i]])
+				if(markers._layers[markers_keys[i]]._latlng.lat != entry_lat && 
+					markers._layers[markers_keys[i]]._latlng.lng != entry_long){
+						add_current_marker(entry);
+						break;
+					}else{
+						add_current_marker(entry, markers._layers[markers_keys[i]]);
+						break;
+					}
+			}
+		}
+	}
+
+	function add_current_marker(entry, target_marker=false){
+
 		// build custom pin icon
 		let pen_type = entry.count_type;
-		if(entry.penguin_count == 0){pen_type="empty"}
+		let penguin_count = parseInt(entry.penguin_count);
 		let pen_species = entry.common_name.replace(/ /g,'_').replace(/é/g,'e');
-		let size_factor = entry.penguin_count / 60000
+		if(target_marker){
+			penguin_count += parseInt(target_marker.options.penguin_count);
+			markers.removeLayer(target_marker)
+		}
+
+		if(penguin_count == 0){pen_type="empty"}
+		let size_factor = penguin_count / 60000
 		let size_x = (35*size_factor < 35) ? 35 : 35*size_factor;
 		let size_y = (41*size_factor < 41) ? 41 : 41*size_factor;
 
@@ -512,17 +586,22 @@ $(document).ready(function(){
 			iconAnchor: [size_x/2, size_y],
 			popupAnchor: [0, -5]
 		})
+
 		// build pin
 		let marker = L.marker([entry.latitude_epsg_4326,entry.longitude_epsg_4326],{
 			title: entry.site_name,
-			icon: pinIcon
+			icon: pinIcon,
+			pen_type: pen_type,
+			pen_species: pen_species,
+			penguin_count: penguin_count
 		});
 
 		// bind marker details to the marker
 		marker.bindPopup(add_pen_marker_details(entry));
 
 		// add markers to the maker layer
-		markers.addLayer(marker);
+		marker.addTo(markers)
+		//markers.addLayer(marker);
 	}
 
 	function add_pen_marker_details(entry) {
@@ -578,7 +657,7 @@ $(document).ready(function(){
 		
 		return name + "<ul>" + fac +position + date + season + status +"</ul>"+photo;
 	}
-	$("body").addClass("loading");
+	
 	$("body").removeClass("loading");
 
 });
