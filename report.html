@@ -68,25 +68,46 @@
                   <span class="section-heading">Project goals</span>
                 </h2>
                 <p>
-                    Decribe project goals
+                    The objective of the project is to study the populations of the different types of penguins living in Antarctica.
                 </p>
                 <h2 class="section-heading mb-4">
                   <span class="section-heading">Data Source</span>
                 </h2>
                   <p>
-                    Sources
+                    The data used is the list of all penguin observations in Antarctica (from various sources) compiled by the <a href="http://www.penguinmap.com/">Mapping Application for Penguin Populations and Projected Dynamics</a> (MAPPPD).
+                    For each observation in the dataset, the following data is given:
+                    <ul style="list-style-type:disc">
+                        <li>The name given to the observation site, as well as the site initials</li>
+                        <li>The coordinates of the site</li>
+                        <li>The common name given to the species of penguin</li>
+                        <li>The number of penguins observed</li>
+                        <li>The accuracy level of the observation (1 being the most accurate, 5 the least)</li>
+                        <li>The exact date of the observation</li>
+                        <li>The year of the beginning of the season (For example, January 2010 observations belong to a season starting in 2009)</li>
+                        <li>The type of penguin observed (Adults, chicks, nests)</li>
+                        <li>The source of the observation</li>
+                    </ul> 
+                    Other data is also available but was not used for this project.
                   </p>
                   <h2 class="section-heading mb-4">
                       <span class="section-heading">Features</span>
                   </h2>
                   <p>
-                      What's implemented
+                      Our project is set up as an interactive website, allowing the user to discover the dataset and its implications. Using a menu at the top of each page, the user can browse different sections of the site.</br>
+                      The index of the site is a homepage, allowing access to all the pages.</br>
+                      The map page contains our interactive map, allowing the user to see the locations and species of all observed penguins for any given years, as well as a heatmap of penguin activity.</br>
+                      The penguin page displays a chart of all observations, grouped by month, allowing the user to see how the data is distributed as well as see, for any given parameters, the observations with the most penguins corresponding to those parameters.</br>
+                      The final page is the one you're reading right now!
                   </p>
                   <h2 class="section-heading mb-4">
                       <span class="section-heading">Technologies</span>
                   </h2>
                   <p>
-                      node.js, HTML5, CSS, javascript, D3.js, Bootstrap, ...
+                      The website is based on a free to use Bootstrap template from <a href="https://startbootstrap.com/">StartBootstrap</a>. Using a base template, we can quickly start to add our own content without worrying about the basics.</br>
+                      The graphs were creating using <a href="https://d3js.org/">D3.js</a>, <a href="https://dc-js.github.io/dc.js/">dc.js</a> and <a href="http://square.github.io/crossfilter/">Crossfilter</a>.
+                      Using Crossfilter, we can select what data dimensions to consider and natively feed to DC.js graphs, which in turn uses D3.js to render and display them. Crossfilter allows interactive data filtering without completely recreating all graphs, allowing for fast modification of the data displayed.
+
+                      TODO interactive map
                   </p>
                   <h2 class="section-heading mb-4">
                       <span class="section-heading">Usability</span>
